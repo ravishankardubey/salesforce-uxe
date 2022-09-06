@@ -35,6 +35,8 @@ class AppsDashboard extends HTMLElement {
             const el = document.createElement('app-tile');
             el.setAttribute('title', s.title);
             el.setAttribute('description', s.description);
+            s.icon && el.setAttribute('icon', s.icon);
+            s.background && el.setAttribute('background', s.background);
             drawer.appendChild(el);
         });
 

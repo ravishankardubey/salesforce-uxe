@@ -15,6 +15,8 @@ tileTemplate.innerHTML = `
         height: 80px;
         aspect-ratio: 1;
         background-color: #ffffff;
+        padding: 15px;
+        box-sizing: border-box;
     }
 
     .app-details {
@@ -48,13 +50,42 @@ tileTemplate.innerHTML = `
     }
 </style>
 <div class="app-card">
-    <div class="app-icon"></div>
+    <div class="app-icon" id="app-icon"></div>
     <div class="app-details">
         <div class="title" id="title">XYZ</div>
         <div class="desc" id="desc">Lorem Ipsum</div>
     </div>
     <div class="drag-holder">&#8286;&#8286;</div>
 </div>`;
+
+const iconImageTemplate = document.createElement('template');
+iconImageTemplate.innerHTML = `
+<style>
+    img {
+        max-height: 100%;
+        max-width: 100%;
+    }
+</style>
+<img/>
+`;
+
+const iconTextTemplate = document.createElement('template');
+iconTextTemplate.innerHTML = `
+<style>
+    .icon-text {
+        height: 100%;
+        width: 100%;
+        color: #ffffff;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 3px;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+</style>
+<div class="icon-text"></div>`;
 
 class AppTile extends HTMLElement {
     constructor() {
@@ -68,6 +99,24 @@ class AppTile extends HTMLElement {
     async connectedCallback() {
         this.shadowRoot.getElementById('title').innerText = this.getAttribute('title');
         this.shadowRoot.getElementById('desc').innerText = this.getAttribute('description');
+
+        const icon = this.getAttribute('icon');
+
+        if (icon) {
+            const node = iconImageTemplate.content.cloneNode(true);
+            node.querySelector('img').src = icon;
+            this.shadowRoot.getElementById('app-icon').appendChild(node);
+        } else {
+            const node = iconTextTemplate.content.cloneNode(true);
+            const div = node.querySelector('div');
+
+            const titleText = this.getAttribute('title');
+            const index = titleText.indexOf(" ");
+            div.innerText = index > 1 ? titleText[0] + '' + titleText[index + 1] : titleText.slice(0, 2);
+
+            div.style.backgroundColor = this.getAttribute('background') || '#2b71cb';;
+            this.shadowRoot.getElementById('app-icon').appendChild(node);
+        }
     }
 
 }
