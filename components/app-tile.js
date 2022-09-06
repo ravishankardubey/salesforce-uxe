@@ -97,7 +97,9 @@ class AppTile extends HTMLElement {
     }
 
     async connectedCallback() {
-        this.shadowRoot.getElementById('title').innerText = this.getAttribute('title');
+        const titleText = this.getAttribute('title');
+
+        this.shadowRoot.getElementById('title').innerText = titleText;
         this.shadowRoot.getElementById('desc').innerText = this.getAttribute('description');
 
         const icon = this.getAttribute('icon');
@@ -105,12 +107,12 @@ class AppTile extends HTMLElement {
         if (icon) {
             const node = iconImageTemplate.content.cloneNode(true);
             node.querySelector('img').src = icon;
+            node.querySelector('img').alt = titleText;
             this.shadowRoot.getElementById('app-icon').appendChild(node);
         } else {
             const node = iconTextTemplate.content.cloneNode(true);
             const div = node.querySelector('div');
 
-            const titleText = this.getAttribute('title');
             const index = titleText.indexOf(" ");
             div.innerText = index > 1 ? titleText[0] + '' + titleText[index + 1] : titleText.slice(0, 2);
 
