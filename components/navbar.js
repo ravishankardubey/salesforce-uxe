@@ -56,6 +56,12 @@ navbarTemplate.innerHTML = `
         flex-grow: 1;
         font-size: 15px;
     }
+
+    @media screen and (max-width: 600px) {
+        .search-wrapper{
+            display: none;
+        }
+    }
 </style>
 
 <div class="launcher-navbar">

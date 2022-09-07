@@ -12,6 +12,18 @@ dashboardTemplate.innerHTML = `
     app-tile {
         flex: 0 0 calc(33% - 10px);
     }
+
+    @media screen and (max-width: 600px) {
+        app-tile {
+            flex: 0 0 100%;
+        }
+    }
+
+    @media screen and (min-width: 600px) and (max-width: 1024px) {
+        app-tile {
+            flex: 0 0 calc(50% - 10px);
+        }
+    }
 </style>
 
 <div class="apps-drawer" id="apps-drawer">
