@@ -18,10 +18,6 @@ navbarTemplate.innerHTML = `
         cursor: pointer;
     }
 
-    .search-wrapper {
-
-    }
-
     .add-btn {
         height: 40px;
         background-color: transparent;
@@ -55,6 +51,7 @@ navbarTemplate.innerHTML = `
         outline: none;
         flex-grow: 1;
         font-size: 15px;
+        min-width: 80px;
     }
 
     @media screen and (max-width: 600px) {

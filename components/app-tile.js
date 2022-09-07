@@ -17,6 +17,7 @@ tileTemplate.innerHTML = `
         background-color: #ffffff;
         padding: 15px;
         box-sizing: border-box;
+        user-select: none;
     }
 
     .app-details {
@@ -34,8 +35,12 @@ tileTemplate.innerHTML = `
     }
 
     .app-details > .desc {
-        // color: #2e77cc;
         font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
     }
 
     
@@ -47,6 +52,7 @@ tileTemplate.innerHTML = `
         font-size: 25px;
         color: #858484;
         cursor: pointer;
+        user-select: none;
     }
 </style>
 <div class="app-card">
