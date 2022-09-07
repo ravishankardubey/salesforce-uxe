@@ -71,7 +71,7 @@ navbarTemplate.innerHTML = `
   <div class="app-name">App Launcher</div>
   <div class="search-wrapper">
     <span class="icon">&#128269;</span>
-    <input type="text" name="search" id="search" class="search" placeholder="Search apps or items..."/>
+    <input type="text" name="search" id="search" class="search" placeholder="Search apps or items..." autocomplete="off"/>
   </div>
   <button class="add-btn" id="add-app-btn">Add New</button>
 </div>`;

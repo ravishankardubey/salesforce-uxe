@@ -109,6 +109,7 @@ class AppTile extends HTMLElement {
         this.shadowRoot.getElementById('desc').innerText = this.getAttribute('description');
 
         const icon = this.getAttribute('icon');
+        this.shadowRoot.getElementById('app-icon').innerHTML = "";
 
         if (icon) {
             const node = iconImageTemplate.content.cloneNode(true);

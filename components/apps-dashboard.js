@@ -13,6 +13,10 @@ dashboardTemplate.innerHTML = `
         flex: 0 0 calc(33% - 10px);
     }
 
+    .drag-active {
+        opacity: 0.5;
+    }
+
     @media screen and (max-width: 600px) {
         app-tile {
             flex: 0 0 100%;
@@ -84,8 +88,11 @@ class AppsDashboard extends HTMLElement {
         const appTile = document.createElement('app-tile');
         appTile.setAttribute('title', appData.title);
         appTile.setAttribute('description', appData.description);
+        appTile.setAttribute('draggable', true);
         appData.icon && appTile.setAttribute('icon', appData.icon);
         appData.background && appTile.setAttribute('background', appData.background);
+        appTile.ondrag = this.#onTileDrag;
+        appTile.ondragend = this.#onTileDragEnd;
         return appTile;
     }
 
@@ -117,6 +124,25 @@ class AppsDashboard extends HTMLElement {
     searchApp(searchText) {
         this.#searchText = searchText;
         this.#filterApps();
+    }
+
+    #onTileDrag(tile) {
+        const selectedTile = tile.target;
+        const parentNode = selectedTile.parentNode;
+        const x = tile.clientX;
+        const y = tile.clientY;
+
+        selectedTile.classList.add('drag-active');
+        let tileToSwap = this.shadowRoot.elementFromPoint(x, y) === null ? selectedTile : this.shadowRoot.elementFromPoint(x, y);
+
+        if (parentNode === tileToSwap.parentNode) {
+            tileToSwap = tileToSwap !== selectedTile.nextSibling ? tileToSwap : tileToSwap.nextSibling;
+            parentNode.insertBefore(selectedTile, tileToSwap);
+        }
+    }
+
+    #onTileDragEnd(tile)  {
+        tile.target.classList.remove('drag-active');
     }
 }
 window.customElements.define('apps-dashboard', AppsDashboard);
