@@ -29,6 +29,22 @@ dashboardTemplate.innerHTML = `
 <div class="apps-drawer" id="apps-drawer">
 </div>`;
 
+const dasboardNoAppFound = document.createElement('template');
+dasboardNoAppFound.innerHTML = `
+<style>
+    .noresult {
+        width: 100%;
+        height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+<div class="noresult">
+    There are no matching apps found, please search again!
+</div>
+`;
+
 class AppsDashboard extends HTMLElement {
     constructor() {
         super();
@@ -38,20 +54,65 @@ class AppsDashboard extends HTMLElement {
         this.shadowRoot.appendChild(dashboardTemplate.content.cloneNode(true));
     }
 
+
+    #appsList = [];
+    #filteredApps = [];
+    #searchText = "";
+    
     async connectedCallback() {
-        const d = await fetch("./assets/data.json").then(response => response.json());
+        this.#appsList = await fetch("./assets/data.json").then(response => response.json());
+        this.#filteredApps = Object.assign([], this.#appsList);
+        this.#renderTiles(this.#filteredApps)
+    }
 
+    #renderTiles(appList) {
         const drawer = this.shadowRoot.getElementById('apps-drawer');
+        drawer.innerHTML = "";
+        
+        if (appList.length) {
+            appList.map(appData => drawer.appendChild(this.#createAppTile(appData)));
+        } else {
+            drawer.appendChild(dasboardNoAppFound.content.cloneNode(true));
+        }
+    }
 
-        d.map(s => {
-            const el = document.createElement('app-tile');
-            el.setAttribute('title', s.title);
-            el.setAttribute('description', s.description);
-            s.icon && el.setAttribute('icon', s.icon);
-            s.background && el.setAttribute('background', s.background);
-            drawer.appendChild(el);
-        });
+    #createAppTile(appData) {
+        const appTile = document.createElement('app-tile');
+        appTile.setAttribute('title', appData.title);
+        appTile.setAttribute('description', appData.description);
+        appData.icon && appTile.setAttribute('icon', appData.icon);
+        appData.background && appTile.setAttribute('background', appData.background);
+        return appTile;
+    }
 
+    #filterApps() {
+        if (this.#searchText) {
+            this.#filteredApps = this.#appsList.filter(appData => this.#isMatchingApp(appData));
+        } else {
+            this.#filteredApps = this.#appsList
+        }
+        
+        this.#renderTiles(this.#filteredApps);
+    }
+
+    #isMatchingApp = (appData) => {
+        return appData.title.includes(this.#searchText) || appData.description.includes(this.#searchText);
+    }
+
+    addNewApp(appData) {
+        this.#appsList.push(appData);
+        if (this.#searchText && this.#isMatchingApp(appData)) {
+            const drawer = this.shadowRoot.getElementById('apps-drawer');
+            drawer.appendChild(this.#createAppTile(appData));
+        } else if(!this.#searchText) {
+            const drawer = this.shadowRoot.getElementById('apps-drawer');
+            drawer.appendChild(this.#createAppTile(appData));
+        }
+    }
+
+    searchApp(searchText) {
+        this.#searchText = searchText;
+        this.#filterApps();
     }
 }
 window.customElements.define('apps-dashboard', AppsDashboard);

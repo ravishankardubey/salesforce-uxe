@@ -67,7 +67,7 @@ navbarTemplate.innerHTML = `
     <span class="icon">&#128269;</span>
     <input type="text" name="search" id="search" class="search" placeholder="Search apps or items..."/>
   </div>
-  <button class="add-btn">Add New</button>
+  <button class="add-btn" id="add-app-btn">Add New</button>
 </div>`;
 
 class LauncherNavbar extends HTMLElement {
@@ -80,7 +80,23 @@ class LauncherNavbar extends HTMLElement {
     }
 
     connectedCallback() {
+        this.shadowRoot.getElementById('add-app-btn').onclick = () => {
+            this.dispatchEvent(new CustomEvent('addApp', {
+                detail: {
+                    title: 'Added from new button',
+                    description: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium',
+                    background: '#a134eb'
+                }
+            }));
+        }
 
+        this.shadowRoot.getElementById('search').oninput = (e) => {
+            this.dispatchEvent(new CustomEvent('searchApp', {
+                detail: {
+                    searchText: e.target.value
+                }
+            }));
+        }
     }
 
 
