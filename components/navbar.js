@@ -11,6 +11,7 @@ navbarTemplate.innerHTML = `
         justify-content: space-between;
         align-items: center;
         box-shadow: 0 2px #dddbda;
+        gap: 10px;
     }
 
     .app-name {
@@ -30,11 +31,12 @@ navbarTemplate.innerHTML = `
     }
 
     .search-wrapper {
+        flex-grow: 1;
         height: 40px;
         display: flex;
         align-items: center;
-        width: 33%;
-        max-width: 500px;
+        max-width: 400px;
+        min-width: 80px;
         gap: 10px;
         border: 1px solid #3999d5;
         border-radius: 5px;
@@ -51,12 +53,16 @@ navbarTemplate.innerHTML = `
         outline: none;
         flex-grow: 1;
         font-size: 15px;
-        min-width: 80px;
+        min-width: 40px;
     }
 
     @media screen and (max-width: 600px) {
         .search-wrapper{
-            display: none;
+            max-width: 150px;
+        }
+
+        .launcher-navbar {
+            padding: 10px;
         }
     }
 </style>

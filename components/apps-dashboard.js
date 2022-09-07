@@ -17,6 +17,10 @@ dashboardTemplate.innerHTML = `
         app-tile {
             flex: 0 0 100%;
         }
+
+        .apps-drawer {
+            padding: 10px;
+        }
     }
 
     @media screen and (min-width: 600px) and (max-width: 1024px) {
